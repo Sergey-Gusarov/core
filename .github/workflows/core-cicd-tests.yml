@@ -143,7 +143,9 @@ jobs:
   run-integration-tests-job:
     name: Integration Tests
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
+      fail-fast: false
       matrix:
         databaseType: [ postgres, mysql, oracle, mssql ]
     env:
@@ -196,28 +198,28 @@ jobs:
           if [[ (! ${COMMIT_MESSG} =~ github-mysql|github-oracle|github-mssql) || ${COMMIT_MESSG} =~ github-all|github-postgres ]]; then
             RUN_POSTGRES=true
           else
-            RUN_POSTGRES=false
+            RUN_POSTGRES=true
           fi
           echo ::set-env name=runPostgres::"${RUN_POSTGRES}"
 
           if [[ ${PUSH_AND_SPECIAL_BRANCH} == true || ${COMMIT_MESSG} =~ github-all|github-mysql ]]; then
             RUN_MYSQL=true
           else
-            RUN_MYSQL=false
+            RUN_MYSQL=true
           fi
           echo ::set-env name=runMysql::"${RUN_MYSQL}"
 
           if [[ ${PUSH_AND_SPECIAL_BRANCH} == true || ${COMMIT_MESSG} =~ github-all|github-oracle ]]; then
             RUN_ORACLE=true
           else
-            RUN_ORACLE=false
+            RUN_ORACLE=true
           fi
           echo ::set-env name=runOracle::"${RUN_ORACLE}"
 
           if [[ ${PUSH_AND_SPECIAL_BRANCH} == true || ${COMMIT_MESSG} =~ github-all|github-mssql ]]; then
             RUN_MSSQL=true
           else
-            RUN_MSSQL=false
+            RUN_MSSQL=true
           fi
           echo ::set-env name=runMssql::"${RUN_MSSQL}"
 
